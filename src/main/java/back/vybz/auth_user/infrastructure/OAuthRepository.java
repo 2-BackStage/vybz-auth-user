@@ -1,0 +1,14 @@
+package back.vybz.auth_user.infrastructure;
+
+import back.vybz.auth_user.domain.SocialType;
+import back.vybz.auth_user.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface OAuthRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByUserUuid(String userUuid);
+
+    Optional<User> findBySocialTypeAndProviderId(SocialType socialType, String providerId);
+}
