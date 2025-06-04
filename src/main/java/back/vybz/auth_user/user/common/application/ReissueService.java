@@ -8,10 +8,8 @@ import back.vybz.auth_user.user.domain.User;
 import back.vybz.auth_user.user.dto.response.ResponseUserSignInDto;
 import back.vybz.auth_user.user.infrastructure.OAuthRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReissueService {

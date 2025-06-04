@@ -17,14 +17,14 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class RedisConfig {
 
-    private final RedisProperties properties;
+    private final RedisProperties redisProperties;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(properties.getHost());
-        redisStandaloneConfiguration.setPort(properties.getPort());
-        redisStandaloneConfiguration.setPassword(properties.getPassword());
+        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+        redisStandaloneConfiguration.setPort(redisProperties.getPort());
+        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
                 .commandTimeout(Duration.ofSeconds(2))

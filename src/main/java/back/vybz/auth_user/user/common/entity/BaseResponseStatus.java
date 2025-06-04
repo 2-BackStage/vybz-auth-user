@@ -45,6 +45,9 @@ public enum BaseResponseStatus {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, false, 409, "Refresh Token이 만료되었습니다. 다시 로그인해주세요."),
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, false, 410, "유효하지 않은 Access Token입니다."),
     FAILED_TO_LOGIN(HttpStatus.UNAUTHORIZED, false, 411, "아이디 또는 비밀번호가 일치하지 않습니다."),
+    EXPIRED_OR_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, false, 412, "만료되었거나 위조된 토큰입니다."),
+    TOKEN_MISMATCH_WITH_REDIS(HttpStatus.UNAUTHORIZED, false, 413, "Redis에 저장된 액세스 토큰과 일치하지 않습니다."),
+
 
     /**
      * 900: 기타 에러

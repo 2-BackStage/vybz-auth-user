@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "user")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class User extends SoftDeletableEntity {
 
     @Id

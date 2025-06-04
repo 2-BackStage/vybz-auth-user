@@ -1,6 +1,8 @@
 package back.vybz.auth_user.user.common.jwt;
 
 import back.vybz.auth_user.user.application.OAuthService;
+import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.user.common.exception.BaseException;
 import back.vybz.auth_user.user.common.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
             if (!jwtProvider.isValidToken(jwt)) {
-                throw new RuntimeException("만료되었거나 위조된 토큰입니다.");
+                throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
             }
 
             String tokenType = jwtProvider.extractTokenType(jwt);
@@ -56,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String redisAccessToken = redisUtil.get(redisKey);
 
                 if (redisAccessToken == null || !redisAccessToken.equals(jwt)) {
-                    throw new RuntimeException("Redis에 저장된 액세스 토큰과 일치하지 않습니다.");
+                    throw new BaseException(BaseResponseStatus.TOKEN_MISMATCH_WITH_REDIS);
                 }
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -13,7 +13,6 @@ import back.vybz.auth_user.user.dto.request.RequestOAuthSignInDto;
 import back.vybz.auth_user.user.dto.response.ResponseUserSignInDto;
 import back.vybz.auth_user.user.infrastructure.OAuthRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuthServiceImpl implements OAuthService {
