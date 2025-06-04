@@ -1,4 +1,4 @@
-package back.vybz.auth_user.user.common.config;
+package back.vybz.auth_user.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

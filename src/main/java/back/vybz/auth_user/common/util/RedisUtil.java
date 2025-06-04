@@ -1,4 +1,4 @@
-package back.vybz.auth_user.user.common.util;
+package back.vybz.auth_user.common.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

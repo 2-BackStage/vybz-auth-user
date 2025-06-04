@@ -1,6 +1,6 @@
 package back.vybz.auth_user.user.domain;
 
-import back.vybz.auth_user.user.common.entity.SoftDeletableEntity;
+import back.vybz.auth_user.common.entity.SoftDeletableEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

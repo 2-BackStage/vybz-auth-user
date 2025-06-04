@@ -1,4 +1,4 @@
-package back.vybz.auth_user.user.common.entity;
+package back.vybz.auth_user.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

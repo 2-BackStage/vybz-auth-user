@@ -1,9 +1,9 @@
-package back.vybz.auth_user.user.common.jwt;
+package back.vybz.auth_user.common.jwt;
 
 import back.vybz.auth_user.user.application.OAuthService;
-import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
-import back.vybz.auth_user.user.common.exception.BaseException;
-import back.vybz.auth_user.user.common.util.RedisUtil;
+import back.vybz.auth_user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.common.exception.BaseException;
+import back.vybz.auth_user.common.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

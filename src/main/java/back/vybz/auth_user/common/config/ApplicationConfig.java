@@ -1,7 +1,7 @@
-package back.vybz.auth_user.user.common.config;
+package back.vybz.auth_user.common.config;
 
-import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
-import back.vybz.auth_user.user.common.exception.BaseException;
+import back.vybz.auth_user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.common.exception.BaseException;
 import back.vybz.auth_user.user.domain.CustomUserDetails;
 import back.vybz.auth_user.user.infrastructure.OAuthRepository;
 import lombok.RequiredArgsConstructor;

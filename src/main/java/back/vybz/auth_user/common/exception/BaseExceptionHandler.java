@@ -1,7 +1,7 @@
-package back.vybz.auth_user.user.common.exception;
+package back.vybz.auth_user.common.exception;
 
-import back.vybz.auth_user.user.common.entity.BaseResponseEntity;
-import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.common.entity.BaseResponseEntity;
+import back.vybz.auth_user.common.entity.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

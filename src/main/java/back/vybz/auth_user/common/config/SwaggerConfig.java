@@ -1,4 +1,4 @@
-package back.vybz.auth_user.user.common.config;
+package back.vybz.auth_user.common.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

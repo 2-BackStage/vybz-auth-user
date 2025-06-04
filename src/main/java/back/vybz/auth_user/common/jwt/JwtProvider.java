@@ -1,7 +1,7 @@
-package back.vybz.auth_user.user.common.jwt;
+package back.vybz.auth_user.common.jwt;
 
-import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
-import back.vybz.auth_user.user.common.exception.BaseException;
+import back.vybz.auth_user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.common.exception.BaseException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;

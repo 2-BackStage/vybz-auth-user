@@ -1,7 +1,7 @@
-package back.vybz.auth_user.user.common.application;
+package back.vybz.auth_user.common.application;
 
-import back.vybz.auth_user.user.common.jwt.JwtProvider;
-import back.vybz.auth_user.user.common.util.RedisUtil;
+import back.vybz.auth_user.common.jwt.JwtProvider;
+import back.vybz.auth_user.common.util.RedisUtil;
 import back.vybz.auth_user.user.domain.User;
 import back.vybz.auth_user.user.dto.response.ResponseUserSignInDto;
 import lombok.RequiredArgsConstructor;

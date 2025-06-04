@@ -1,6 +1,6 @@
-package back.vybz.auth_user.user.common.exception;
+package back.vybz.auth_user.common.exception;
 
-import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.common.entity.BaseResponseStatus;
 import lombok.Getter;
 
 @Getter

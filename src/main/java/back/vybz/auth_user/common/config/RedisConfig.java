@@ -1,4 +1,4 @@
-package back.vybz.auth_user.user.common.config;
+package back.vybz.auth_user.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
