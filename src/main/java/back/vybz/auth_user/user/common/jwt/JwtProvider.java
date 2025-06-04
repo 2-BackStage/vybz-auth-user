@@ -1,5 +1,7 @@
 package back.vybz.auth_user.user.common.jwt;
 
+import back.vybz.auth_user.user.common.entity.BaseResponseStatus;
+import back.vybz.auth_user.user.common.exception.BaseException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class JwtProvider {
         try {
             return extractClaim(token, Claims::getSubject);
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("토큰에 담긴 유저 정보가 없습니다");
+            throw new BaseException(BaseResponseStatus.TOKEN_USER_NOT_FOUND);
         }
     }
 
