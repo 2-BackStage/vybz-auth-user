@@ -32,7 +32,7 @@ public class User extends SoftDeletableEntity {
     /**
      * 소셜 id
      */
-    @Column(name = "provider_id", unique = true, nullable = false, length = 20)
+    @Column(name = "provider_id", unique = true, nullable = false, length = 30)
     private String providerId;
 
     /**
