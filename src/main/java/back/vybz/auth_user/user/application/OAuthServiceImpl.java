@@ -5,6 +5,8 @@ import back.vybz.auth_user.common.entity.BaseResponseStatus;
 import back.vybz.auth_user.common.exception.BaseException;
 import back.vybz.auth_user.common.jwt.JwtProvider;
 import back.vybz.auth_user.common.util.RedisUtil;
+import back.vybz.auth_user.kafka.event.UserAuthEvent;
+import back.vybz.auth_user.kafka.producer.UserKafkaProducer;
 import back.vybz.auth_user.user.domain.CustomUserDetails;
 import back.vybz.auth_user.user.domain.SocialType;
 import back.vybz.auth_user.user.domain.Status;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,6 +35,8 @@ public class OAuthServiceImpl implements OAuthService {
 
     private final RedisUtil<String> redisUtil;
 
+    private final UserKafkaProducer userKafkaProducer;
+
     @Override
     public UserDetails loadUserByUuid(String userUuid) {
         return oAuthRepository.findByUserUuid(userUuid)
@@ -45,23 +50,33 @@ public class OAuthServiceImpl implements OAuthService {
 
         String providerId = requestOAuthSignInDto.getProviderId();
         String email = requestOAuthSignInDto.getEmail();
-
         SocialType socialType = SocialType.valueOf(requestOAuthSignInDto.getProvider().toUpperCase());
 
-        User user = oAuthRepository.findBySocialTypeAndProviderId(socialType, providerId)
-                .orElseGet(() -> {
-                    User newUser = User.builder()
-                            .userUuid(UUID.randomUUID().toString())
-                            .providerId(providerId)
-                            .socialType(socialType)
-                            .email(email)
-                            .status(Status.ACTIVE)
-                            .build();
+        Optional<User> existingUser = oAuthRepository.findBySocialTypeAndProviderId(socialType, providerId);
 
-                    return oAuthRepository.save(newUser);
-                });
+        if (existingUser.isPresent()) {
+            return tokenService.issueToken(existingUser.get());
+        }
 
-        return tokenService.issueToken(user);
+
+        User newUser = User.builder()
+                .userUuid(UUID.randomUUID().toString())
+                .providerId(providerId)
+                .socialType(socialType)
+                .email(email)
+                .status(Status.ACTIVE)
+                .build();
+
+        User savedUser = oAuthRepository.save(newUser);
+
+        userKafkaProducer.sendUserAuthEvent(UserAuthEvent.builder()
+                .userUuid(savedUser.getUserUuid())
+                .nickname(requestOAuthSignInDto.getNickname())
+                .build());
+
+
+
+        return tokenService.issueToken(savedUser);
     }
 
     @Transactional
