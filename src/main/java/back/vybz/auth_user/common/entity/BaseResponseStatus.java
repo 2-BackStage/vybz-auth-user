@@ -48,6 +48,7 @@ public enum BaseResponseStatus {
     EXPIRED_OR_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, false, 412, "만료되었거나 위조된 토큰입니다."),
     TOKEN_MISMATCH_WITH_REDIS(HttpStatus.UNAUTHORIZED, false, 413, "Redis에 저장된 액세스 토큰과 일치하지 않습니다."),
     TOKEN_USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, false, 414, "토큰에 담긴 유저 정보를 찾을 수 없습니다."),
+    INVALID_PROVIDER(HttpStatus.CONFLICT, false, 415, "이미 가입된 이메일입니다."),
 
 
     /**

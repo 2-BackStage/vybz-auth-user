@@ -52,12 +52,17 @@ public class OAuthServiceImpl implements OAuthService {
         String email = requestOAuthSignInDto.getEmail();
         SocialType socialType = SocialType.valueOf(requestOAuthSignInDto.getProvider().toUpperCase());
 
-        Optional<User> existingUser = oAuthRepository.findBySocialTypeAndProviderId(socialType, providerId);
+        Optional<User> userByEmail = oAuthRepository.findByEmail(email);
 
-        if (existingUser.isPresent()) {
-            return tokenService.issueToken(existingUser.get());
+        if(userByEmail.isPresent()) {
+            User user = userByEmail.get();
+
+            if(!user.getProviderId().equals(providerId) || !user.getEmail().equals(email)) {
+                throw new BaseException(BaseResponseStatus.INVALID_PROVIDER);
+            }
+
+            return tokenService.issueToken(user);
         }
-
 
         User newUser = User.builder()
                 .userUuid(UUID.randomUUID().toString())
@@ -74,8 +79,6 @@ public class OAuthServiceImpl implements OAuthService {
                 .nickname(requestOAuthSignInDto.getNickname())
                 .build());
 
-
-
         return tokenService.issueToken(savedUser);
     }
 
@@ -91,7 +94,6 @@ public class OAuthServiceImpl implements OAuthService {
 
         String uuid = jwtProvider.extractSubject(refreshToken);
 
-        redisUtil.delete("Access:" + uuid);
         redisUtil.delete("Refresh:" + uuid);
     }
 }
