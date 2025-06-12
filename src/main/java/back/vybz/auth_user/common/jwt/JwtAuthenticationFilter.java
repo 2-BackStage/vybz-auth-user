@@ -3,7 +3,6 @@ package back.vybz.auth_user.common.jwt;
 import back.vybz.auth_user.user.application.OAuthService;
 import back.vybz.auth_user.common.entity.BaseResponseStatus;
 import back.vybz.auth_user.common.exception.BaseException;
-import back.vybz.auth_user.common.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +22,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-
-    private final RedisUtil<String> redisUtil;
 
     private final OAuthService oAuthService;
 
