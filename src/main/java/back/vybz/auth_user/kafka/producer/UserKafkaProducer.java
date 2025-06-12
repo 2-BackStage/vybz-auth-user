@@ -20,15 +20,27 @@ public class UserKafkaProducer {
 
     public void sendUserAuthEvent(UserAuthEvent event) {
         log.info("[Kafka] Sending UserAuthEvent to topic '{}': {}", CREATE_USER_TOPIC, event);
-        CompletableFuture<SendResult<String, UserAuthEvent>> future =
-                kafkaTemplate.send(CREATE_USER_TOPIC, event);
 
-        future.whenComplete((result, ex) -> {
-            if (ex != null) {
-                log.error("[Kafka] Failed to send UserAuthEvent: {}", ex.getMessage(), ex);
-            } else {
-                log.info("[Kafka] Successfully sent UserAuthEvent with offset: {}", result.getRecordMetadata().offset());
-            }
-        });
+        // 네트워크 안될 때 처리 메시지
+        // 에러 헨들러는 kafkaTemplate 안에 있다
+        try {
+            CompletableFuture<SendResult<String, UserAuthEvent>> future = kafkaTemplate.send(CREATE_USER_TOPIC, event);
+
+            future.whenComplete((result, ex) -> {
+                if (ex != null) {
+                    log.error("[Kafka] Failed to send UserAuthEvent: {}", ex.getMessage(), ex);
+
+                    // 여기서 에러 헨들러 처리하기 !
+
+                } else {
+                    log.info("[Kafka] Successfully sent UserAuthEvent. Topic: {}, Partition: {}, Offset: {}",
+                            result.getRecordMetadata().topic(),
+                            result.getRecordMetadata().partition(),
+                            result.getRecordMetadata().offset());
+                }
+            });
+        } catch (Exception e) {
+            log.error("[Kafka] Failed to send UserAuthEvent: {}", e.getMessage(), e);
+        }
     }
 }

@@ -52,16 +52,20 @@ public class OAuthServiceImpl implements OAuthService {
         String email = requestOAuthSignInDto.getEmail();
         SocialType socialType = SocialType.valueOf(requestOAuthSignInDto.getProvider().toUpperCase());
 
-        Optional<User> userByEmail = oAuthRepository.findByEmail(email);
+        Optional<User> userOptional = oAuthRepository.findByProviderIdAndSocialType(providerId, socialType);
 
-        if(userByEmail.isPresent()) {
-            User user = userByEmail.get();
-
-            if(!user.getProviderId().equals(providerId) || !user.getEmail().equals(email)) {
-                throw new BaseException(BaseResponseStatus.INVALID_PROVIDER);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (!user.getEmail().equals(email)) {
+                throw new BaseException(BaseResponseStatus.INVALID_EMAIL_FOR_PROVIDER);
             }
 
             return tokenService.issueToken(user);
+        }
+
+        // 이메일로 이미 가입된 사용자가 있다면 → providerId가 다르면 잘못된 로그인 시도
+        if (oAuthRepository.findByEmail(email).isPresent()) {
+            throw new BaseException(BaseResponseStatus.INVALID_PROVIDER);
         }
 
         User newUser = User.builder()
@@ -74,9 +78,11 @@ public class OAuthServiceImpl implements OAuthService {
 
         User savedUser = oAuthRepository.save(newUser);
 
+        // kafka 보냈지만 제대로 들어가는지 확인 x -> 리턴 에러 핸들러 붙어야 함 ! (트랜잭션 아니기 때문)
         userKafkaProducer.sendUserAuthEvent(UserAuthEvent.builder()
                 .userUuid(savedUser.getUserUuid())
                 .nickname(requestOAuthSignInDto.getNickname())
+                .profileImageUrl(requestOAuthSignInDto.getProfileImageUrl())
                 .build());
 
         return tokenService.issueToken(savedUser);
@@ -94,6 +100,6 @@ public class OAuthServiceImpl implements OAuthService {
 
         String uuid = jwtProvider.extractSubject(refreshToken);
 
-        redisUtil.delete("Refresh:" + uuid);
+        redisUtil.delete("Refresh_user:" + uuid);
     }
 }

@@ -83,21 +83,24 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public boolean isValidToken(String token) {
+    public void validateToken(String token) {
         try {
             extractAllClaims(token);
-            return true;
         } catch (ExpiredJwtException e) {
             log.warn("❌ 만료된 JWT 토큰입니다: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.warn("❌ 지원하지 않는 JWT 토큰입니다: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
         } catch (MalformedJwtException e) {
             log.warn("❌ 잘못된 형식의 JWT 토큰입니다: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
         } catch (IllegalArgumentException e) {
             log.warn("❌ JWT claims 비어있습니다: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
         } catch (Exception e) {
             log.warn("❌ 유효하지 않은 JWT: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
         }
-        return false;
     }
 }

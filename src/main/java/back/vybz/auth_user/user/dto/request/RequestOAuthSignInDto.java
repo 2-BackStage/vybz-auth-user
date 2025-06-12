@@ -17,13 +17,16 @@ public class RequestOAuthSignInDto {
 
     private String nickname;
 
+    private String profileImageUrl;
+
     @Builder
     public RequestOAuthSignInDto(String provider, String providerId,
-                                 String email, String nickname) {
+                                 String email, String nickname, String profileImageUrl) {
         this.provider = provider;
         this.providerId = providerId;
         this.email = email;
         this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public static RequestOAuthSignInDto from(RequestUserSignInVo requestOAuthLoginVo) {
@@ -32,6 +35,7 @@ public class RequestOAuthSignInDto {
                 .providerId(requestOAuthLoginVo.getProviderId())
                 .email(requestOAuthLoginVo.getEmail())
                 .nickname(requestOAuthLoginVo.getNickname())
+                .profileImageUrl(requestOAuthLoginVo.getProfileImageUrl())
                 .build();
     }
 }
