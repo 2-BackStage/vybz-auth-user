@@ -12,9 +12,12 @@ public class UserAuthEvent {
 
     private String nickname;
 
+    private String profileImageUrl;
+
     @Builder
-    public UserAuthEvent(String userUuid, String nickname) {
+    public UserAuthEvent(String userUuid, String nickname, String profileImageUrl) {
         this.userUuid = userUuid;
         this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 }

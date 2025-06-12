@@ -45,9 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
 
-            if (!jwtProvider.isValidToken(jwt)) {
-                throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
-            }
+            jwtProvider.validateToken(jwt);
 
             String tokenType = jwtProvider.extractTokenType(jwt);
             String userUuid = jwtProvider.extractClaim(jwt, claims -> claims.get("user_uuid", String.class));
@@ -61,6 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     throw new BaseException(BaseResponseStatus.TOKEN_MISMATCH_WITH_REDIS);
                 }
 
+                // SecurityContext 인증 정보가 없으면 UserDetails 불러와 인증 정보 세팅
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = oAuthService.loadUserByUuid(userUuid);
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

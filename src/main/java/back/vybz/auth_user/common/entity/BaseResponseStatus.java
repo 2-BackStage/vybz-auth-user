@@ -49,7 +49,7 @@ public enum BaseResponseStatus {
     TOKEN_MISMATCH_WITH_REDIS(HttpStatus.UNAUTHORIZED, false, 413, "Redis에 저장된 액세스 토큰과 일치하지 않습니다."),
     TOKEN_USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, false, 414, "토큰에 담긴 유저 정보를 찾을 수 없습니다."),
     INVALID_PROVIDER(HttpStatus.CONFLICT, false, 415, "이미 가입된 이메일입니다."),
-
+    INVALID_EMAIL_FOR_PROVIDER(HttpStatus.UNAUTHORIZED, false, 416, "해당 소셜 계정에 등록된 이메일이 일치하지 않습니다."),
 
     /**
      * 900: 기타 에러

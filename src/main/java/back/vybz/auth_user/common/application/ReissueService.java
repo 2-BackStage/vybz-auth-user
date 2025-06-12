@@ -36,6 +36,7 @@ public class ReissueService {
         return tokenService.issueToken(user);
     }
 
+    // Authorization 헤더에서 Refresh Token 추출 및 유효성 검사
     private String parseAndValidate(String authorization) {
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             throw new BaseException(BaseResponseStatus.INVALID_REFRESH_TOKEN);
@@ -43,13 +44,12 @@ public class ReissueService {
 
         String refreshToken = authorization.replace("Bearer ", "");
 
-        if (!jwtProvider.isValidToken(refreshToken)) {
-            throw new BaseException(BaseResponseStatus.INVALID_REFRESH_TOKEN);
-        }
+        jwtProvider.validateToken(refreshToken);
 
         return refreshToken;
     }
 
+    // Redis 저장된 Refresh Token 실제 요청된 토큰과 일치하는지 확인
     private void validateRedisToken(String redisKey, String refreshToken) {
         String redisToken = redisUtil.get(redisKey);
         if (redisToken == null || !redisToken.equals(refreshToken)) {

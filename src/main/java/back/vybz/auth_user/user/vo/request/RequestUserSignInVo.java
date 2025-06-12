@@ -16,12 +16,15 @@ public class RequestUserSignInVo {
 
     private String nickname;
 
+    private String profileImageUrl;
+
     @Builder
     public RequestUserSignInVo(String provider, String providerId,
-                               String email, String nickname) {
+                               String email, String nickname, String profileImageUrl) {
         this.provider = provider;
         this.providerId = providerId;
         this.email = email;
         this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 }
