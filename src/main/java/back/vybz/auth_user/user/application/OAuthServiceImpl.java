@@ -39,6 +39,9 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public UserDetails loadUserByUuid(String userUuid) {
+
+        System.out.println("🔥 userUuid 조회 시도: " + userUuid);
+
         return oAuthRepository.findByUserUuid(userUuid)
                 .map(CustomUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 UUID 사용자를 찾을 수 없습니다."));

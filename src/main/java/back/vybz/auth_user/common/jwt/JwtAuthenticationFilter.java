@@ -50,26 +50,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String tokenType = jwtProvider.extractTokenType(jwt);
             String userUuid = jwtProvider.extractClaim(jwt, claims -> claims.get("user_uuid", String.class));
 
+            if (userUuid == null || !"access".equals(tokenType)) {
+                throw new BaseException(BaseResponseStatus.EXPIRED_OR_INVALID_TOKEN);
+            }
 
-            if (userUuid != null && "access".equals(tokenType)) {
-                String redisKey = "Access_user:" + userUuid;
-                String redisAccessToken = redisUtil.get(redisKey);
+            UserDetails userDetails = oAuthService.loadUserByUuid(userUuid);
 
-                if (redisAccessToken == null || !redisAccessToken.equals(jwt)) {
-                    throw new BaseException(BaseResponseStatus.TOKEN_MISMATCH_WITH_REDIS);
-                }
-
-                // SecurityContext 인증 정보가 없으면 UserDetails 불러와 인증 정보 세팅
-                if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = oAuthService.loadUserByUuid(userUuid);
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+            // SecurityContext 인증 정보가 없으면 UserDetails 불러와 인증 정보 세팅
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
