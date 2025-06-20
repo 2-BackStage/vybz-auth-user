@@ -39,3 +39,5 @@ public class UserAuthKafkaConfig {
         return new KafkaTemplate<>(createUserAuthNotification());
     }
 }
+
+
