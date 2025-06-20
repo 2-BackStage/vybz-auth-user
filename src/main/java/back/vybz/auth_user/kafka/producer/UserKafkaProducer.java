@@ -16,7 +16,7 @@ public class UserKafkaProducer {
 
     private final KafkaTemplate<String, UserAuthEvent> kafkaTemplate;
 
-    public static final String CREATE_USER_TOPIC = "create-user-auth";
+    public static final String CREATE_USER_TOPIC = "create-user-auth-1";
 
     public void sendUserAuthEvent(UserAuthEvent event) {
         log.info("[Kafka] Sending UserAuthEvent to topic '{}': {}", CREATE_USER_TOPIC, event);
